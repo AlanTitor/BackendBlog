@@ -1,9 +1,10 @@
-package org.AlanTitor.Entity;
+package org.AlanTitor.Entity.User;
 
 public class UserDTO {
-    //private Long id;
+    private long id;
     private String nickName;
     private String password;
+
 
     public UserDTO(String nickName, String password){
         this.nickName = nickName;
@@ -11,23 +12,22 @@ public class UserDTO {
     }
     public UserDTO(){}
 
-    /*public Long getId() {
+    public long getId() {
         return id;
-    }*/
+    }
 
     public String getPassword() {
         return password;
     }
-
     public String getNickName() {
         return nickName;
     }
 
+
     public void setPassword(String password) {
         this.password = password;
     }
-
-    public void setNick_name(String nick_name) {
-        this.nickName = nick_name;
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
     }
 }

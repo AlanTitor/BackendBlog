@@ -1,6 +1,6 @@
 package org.AlanTitor.Controller.Registration;
 
-import org.AlanTitor.Entity.UserDTO;
+import org.AlanTitor.Entity.User.UserDTO;
 import org.AlanTitor.Service.Register.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

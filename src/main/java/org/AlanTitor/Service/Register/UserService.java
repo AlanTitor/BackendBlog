@@ -1,8 +1,8 @@
 package org.AlanTitor.Service.Register;
 
-import org.AlanTitor.Entity.UserDTO;
-import org.AlanTitor.Entity.UserEntity;
-import org.AlanTitor.Repository.UserRepo;
+import org.AlanTitor.Entity.User.UserDTO;
+import org.AlanTitor.Entity.User.UserEntity;
+import org.AlanTitor.Repository.User.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

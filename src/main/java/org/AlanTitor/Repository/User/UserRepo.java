@@ -1,6 +1,6 @@
-package org.AlanTitor.Repository;
+package org.AlanTitor.Repository.User;
 
-import org.AlanTitor.Entity.UserEntity;
+import org.AlanTitor.Entity.User.UserEntity;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
