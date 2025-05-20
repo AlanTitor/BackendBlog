@@ -8,6 +8,8 @@ import org.AlanTitor.Repository.User.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class PostService {
 
@@ -16,15 +18,32 @@ public class PostService {
     @Autowired
     private UserRepo userRepo;
 
-    public PostEntity createPost(PostDTO postDTO, String author){
-        UserEntity user = userRepo.findByNickName(postDTO.getAuthor().getNickName());
+    // Сохранение поста в БД
+    public PostEntity createPost(PostDTO postDTO, String authorName) throws Exception {
+
+        if(authorName.isEmpty() || postDTO.getTitle().isEmpty() || postDTO.getDate() == 0){
+            throw new Exception("Incorrect data");
+        }
+
+        UserEntity user = userRepo.findByNickName(authorName);
+
+        if(user == null){
+            throw new Exception("User isn't found");
+        }
 
         PostEntity post = new PostEntity(user, postDTO.getTitle(), postDTO.getDate(), postDTO.getBody());
-
-        //user.addPost(post);
+        user.addPost(post);
 
         return postRepo.save(post);
     }
 
+    // Получение всех постов как список
+    public List<PostEntity> getPostsList(){
+        return (List<PostEntity>) postRepo.findAll();
+    }
+
+    public PostEntity getOnePostById(long id){
+        return postRepo.findById(id).get();
+    }
 
 }

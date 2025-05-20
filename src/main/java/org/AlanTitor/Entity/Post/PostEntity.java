@@ -2,6 +2,8 @@ package org.AlanTitor.Entity.Post;
 
 import jakarta.persistence.*;
 import org.AlanTitor.Entity.User.UserEntity;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 
 @Entity
 @Table(name = "Posts")
@@ -9,13 +11,18 @@ public class PostEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     long id;
-    @ManyToOne
+
+    @JsonBackReference
+    @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name = "author_id", nullable = false)
     UserEntity author;
+
     @Column(name = "Title", nullable = false)
     String title;
+
     @Column(name = "Date", nullable = false)
     int date;
+
     @Column(name = "Body", nullable = true)
     String body;
 

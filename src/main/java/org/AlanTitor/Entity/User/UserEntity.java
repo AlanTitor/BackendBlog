@@ -1,9 +1,9 @@
 package org.AlanTitor.Entity.User;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import org.AlanTitor.Entity.Post.PostEntity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -13,12 +13,16 @@ public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
     @Column(name = "name", unique = true)
     private String nickName;
+
     @Column(name = "password", unique = false)
     private String password;
-    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
-    private List<PostEntity> posts = new ArrayList<>();
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "author", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
+    private List<PostEntity> posts;
 
     public UserEntity(String nickName, String password){
         this.nickName = nickName;
