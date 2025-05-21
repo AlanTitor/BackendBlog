@@ -12,20 +12,22 @@ public class UserService {
     @Autowired
     UserRepo userRepo;
 
+    // Сохранение всех данных юзера
     public void saveUser(UserDTO userDTO) throws Exception {
-        if(userDTO.getNickName() != null && userDTO.getPassword() != null){
-            if(userRepo.existsByNickName(userDTO.getNickName())){
+        if(!userDTO.getName().isEmpty() && !userDTO.getLastName().isEmpty() && !userDTO.getEmail().isEmpty() && !userDTO.getPassword().isEmpty()){
+            if(userRepo.existsByEmail(userDTO.getEmail())){
                 throw new Exception("Already exists!");
             }
-            userRepo.save(new UserEntity(userDTO.getNickName(), userDTO.getPassword()));
+            userRepo.save(new UserEntity(userDTO.getName(), userDTO.getLastName(), userDTO.getEmail(), userDTO.getPassword()));
         }
     }
 
+    // Получение имейла и пароля и их сравнение с БД
     public void getUser(UserDTO userDTO) throws Exception {
-        if(userDTO.getNickName() != null && userDTO.getPassword() != null){
-            if(userRepo.existsByNickName(userDTO.getNickName())){
-                UserEntity user = userRepo.findByNickName(userDTO.getNickName());
-                if(user.getNickName().equals(userDTO.getNickName()) && user.getPassword().equals(userDTO.getPassword())){
+        if(!userDTO.getEmail().isEmpty() && !userDTO.getPassword().isEmpty()){
+            if(userRepo.existsByEmail(userDTO.getEmail())){
+                UserEntity user = userRepo.findByEmail(userDTO.getEmail());
+                if(user.getEmail().equals(userDTO.getEmail()) && user.getPassword().equals(userDTO.getPassword())){
                     return;
                 }
                 throw new Exception("Wrong data!");

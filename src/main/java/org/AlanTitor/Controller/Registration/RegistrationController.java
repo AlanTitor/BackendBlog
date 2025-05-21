@@ -18,7 +18,7 @@ public class RegistrationController {
     // Эндпоинт регистрации юзера
     @PostMapping("/reg")
     public ResponseEntity<String> getUserDataToRegister(@RequestBody UserDTO userDTO){
-        if(userDTO.getNickName() != null && userDTO.getPassword() != null){
+        if(!userDTO.getName().isEmpty() && !userDTO.getLastName().isEmpty() && !userDTO.getEmail().isEmpty() && !userDTO.getPassword().isEmpty()){
             try{
                 userService.saveUser(userDTO);
                 return new ResponseEntity<>("Registered", HttpStatus.CREATED);
@@ -31,7 +31,7 @@ public class RegistrationController {
     // Эндпоинт входа юзера (залогинивание)
     @PostMapping("/login")
     public ResponseEntity<String> getUserDataToLogin(@RequestBody UserDTO userDTO) {
-        if(userDTO.getNickName() != null && userDTO.getPassword() != null){
+        if(!userDTO.getEmail().isEmpty() && !userDTO.getPassword().isEmpty()){
             try{
                 userService.getUser(userDTO);
                 return new ResponseEntity<>("Logged", HttpStatus.OK);

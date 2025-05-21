@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Детали поста | Сердце Кавказа</title> <!-- Будет обновляться JS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2ecc71;
+            --dark-color: #2c3e50;    /* Основной темный цвет для текста и заголовков */
+            --light-gray-bg: #f4f7f6; /* Более мягкий светло-серый фон */
+            --text-color-main: #34495e; /* Основной цвет текста */
+            --text-color-muted: #6c757d; /* Приглушенный текст для мета-информации */
+            --white-color: #ffffff;
+            --accent-color: #e74c3c;
+            --menu-width: 280px;
+            --menu-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            --menu-transition: transform 0.3s ease-in-out;
+            --content-max-width: 800px; /* Максимальная ширина контента поста */
+            --border-light: #dee2e6;   /* Светлая граница, чуть темнее */
+            --border-radius-std: 8px;  /* Стандартный радиус скругления */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+        }
+
+        body {
+            color: var(--text-color-main);
+            line-height: 1.75; /* Увеличил для лучшей читаемости длинных текстов */
+            overflow-x: hidden;
+            background-color: var(--light-gray-bg);
+            font-size: 17px; /* Немного увеличил базовый шрифт */
+        }
+
+        body.menu-open {
+            overflow: hidden;
+        }
+
+        /* === Шапка (примерные стили, используй свои) === */
+        header {
+            background-color: var(--white-color); /* Непрозрачная шапка */
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            padding: 15px 0;
+        }
+        .header-container { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        .logo { font-size: 24px; font-weight: 700; color: var(--primary-color); text-decoration: none; }
+        .menu-toggle { background: none; border: none; font-size: 24px; color: var(--primary-color); cursor: pointer; padding: 5px 10px; border-radius: 4px; }
+
+        /* === Улучшенные стили для Бокового Меню (как в tour-form.html) === */
+        .side-menu { position: fixed; top: 0; left: 0; transform: translateX(-100%); width: var(--menu-width); height: 100vh; background-color: var(--white-color); box-shadow: var(--menu-shadow); z-index: 1100; transition: var(--menu-transition); overflow-y: auto; display: flex; flex-direction: column; }
+        .side-menu.open { transform: translateX(0%); }
+        .menu-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1050; opacity: 0; visibility: hidden; transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out; }
+        .menu-overlay.visible { opacity: 1; visibility: visible; }
+        .menu-header { padding: 20px 25px; background: var(--primary-color); color: var(--white-color); display: flex; justify-content: space-between; align-items: center; }
+        .menu-header h3 { margin: 0; font-size: 1.4em; font-weight: 600; }
+        .menu-close { background: none; border: none; color: var(--white-color); font-size: 28px; cursor: pointer; padding: 5px; line-height: 1; transition: color 0.2s ease; }
+        .menu-nav { padding: 15px 0; flex-grow: 1; }
+        .menu-item { border-bottom: 1px solid #f0f0f0; }
+        .menu-item:last-child { border-bottom: none; }
+        .menu-link { display: block; padding: 15px 25px; color: var(--text-color-dark); text-decoration: none; transition: background-color 0.2s ease, color 0.2s ease, padding-left 0.2s ease; font-weight: 500; font-size: 1.05em; }
+        .menu-link .fas { margin-right: 12px; width: 20px; text-align: center; color: var(--primary-color); }
+        /* ... (остальные стили меню, включая :hover и для logout) ... */
+
+
+        /* === Стили для страницы детального просмотра поста === */
+        .post-detail-page-container {
+            padding-top: 100px;
+            padding-bottom: 60px;
+        }
+
+        .post-content-wrapper {
+            max-width: var(--content-max-width);
+            margin: 0 auto;
+            padding: 40px 45px; /* Больше отступов */
+            background: var(--white-color);
+            border-radius: var(--border-radius-std);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08); /* Более выраженная тень */
+        }
+
+        .post-main-image-container { /* Контейнер для основного изображения поста */
+            margin-bottom: 30px;
+            border-radius: var(--border-radius-std);
+            overflow: hidden; /* Чтобы скругление применилось к img */
+        }
+        .post-main-image-container img {
+            display: block;
+            width: 100%;
+            height: auto;
+            max-height: 450px; /* Ограничение по высоте для больших изображений */
+            object-fit: cover; /* Чтобы изображение заполняло контейнер, обрезаясь */
+        }
+
+        .post-title-detail {
+            font-size: 2.6em; /* Еще крупнее */
+            margin-bottom: 15px;
+            color: var(--dark-color);
+            line-height: 1.25;
+            font-weight: 700;
+            letter-spacing: -0.5px; /* Небольшой минус для плотности */
+        }
+
+        .post-meta-info-detail {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px 25px;
+            color: var(--text-color-muted);
+            font-size: 0.95em; /* Чуть крупнее мета */
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-light);
+        }
+        .post-meta-info-detail span { display: flex; align-items: center; }
+        .post-meta-info-detail .fas { margin-right: 8px; color: var(--primary-color); font-size: 1.15em; }
+
+        .post-description-section {
+            margin-top: 25px;
+        }
+        .post-description-section h3 { /* Подзаголовки для краткого/полного описания */
+            font-size: 1.6em;
+            color: var(--dark-color);
+            margin-top: 35px;
+            margin-bottom: 18px;
+            font-weight: 600;
+        }
+        .post-description-section h3:first-child { margin-top: 0; }
+
+        .post-description-section p,
+        .post-description-section div > p, /* Если body приходит как HTML */
+        .post-description-section li {
+            margin-bottom: 1.3em;
+            font-size: 1.08em; /* Основной текст чуть крупнее */
+            color: var(--text-color-main); /* Явное указание цвета */
+        }
+        .post-description-section strong { font-weight: 600; color: var(--dark-color); }
+        .post-description-section em { font-style: italic; color: #555; } /* Немного темнее курсив */
+        .post-description-section a { color: var(--primary-color); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; transition: color 0.2s ease; }
+        .post-description-section a:hover { color: #237AB5; /* Темнее primary */ }
+        .post-description-section ul, .post-description-section ol { margin-bottom: 1.3em; padding-left: 30px; }
+        .post-description-section li { margin-bottom: 0.6em; }
+        .post-description-section img { max-width: 100%; height: auto; border-radius: var(--border-radius-std); margin: 30px auto; display: block; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .post-description-section blockquote { margin: 25px 0; padding: 20px 25px; background-color: #eef5f9; /* Светло-голубой фон для цитат */ border-left: 5px solid var(--primary-color); font-style: italic; color: var(--text-color-main); font-size: 1.05em; }
+        .post-description-section blockquote p { margin-bottom: 0; }
+        .post-description-section pre { background-color: #282c34; color: #abb2bf; padding: 20px; border-radius: var(--border-radius-std); overflow-x: auto; font-family: 'Fira Code', 'Courier New', monospace; font-size: 0.95em; margin: 25px 0; line-height: 1.6; } /* Пример для блока кода */
+        .post-description-section code { background-color: #eef5f9; padding: 3px 6px; border-radius: 4px; font-family: 'Fira Code', 'Courier New', monospace; font-size: 0.9em; color: var(--primary-color); }
+
+        .loading-post-detail, .error-message-post-detail { text-align: center; font-size: 1.3em; padding: 60px 20px; color: var(--text-color-muted); }
+        .error-message-post-detail { color: var(--accent-color); }
+
+        .back-to-list-link { display: inline-block; margin-top: 40px; padding: 12px 22px; background-color: var(--primary-color); color: var(--white-color); text-decoration: none; border-radius: 6px; transition: background-color 0.2s ease; font-weight: 500; }
+        .back-to-list-link .fas { margin-right: 8px; }
+        .back-to-list-link:hover { background-color: #2980b9; }
+
+        footer { /* Твои стили для footer */ }
+    </style>
+</head>
+<body>
+<header>
+    <div class="header-container">
+        <a href="index.html" class="logo">Сердце Кавказа</a>
+        <button class="menu-toggle" id="menuToggle"><i class="fas fa-bars"></i></button>
+    </div>
+</header>
+
+<div class="side-menu" id="sideMenu">
+    <div class="menu-header"><h3>Меню</h3><button class="menu-close" id="menuClose"><i class="fas fa-times"></i></button></div>
+    <nav class="menu-nav"></nav>
+</div>
+<div class="menu-overlay" id="menuOverlay"></div>
+
+<main class="post-detail-page-container">
+    <div id="postDetailContentWrapper" class="post-content-wrapper">
+        <p class="loading-post-detail">Загрузка поста...</p>
+        <!-- Контент поста будет вставлен сюда JS -->
+    </div>
+</main>
+
+<footer>
+    <div class="copyright" style="background-color: var(--dark-color); color: var(--white-color); padding: 20px; text-align: center;">
+        <p>© 2024 Сердце Кавказа. Все права защищены.</p>
+    </div>
+</footer>
+
+<script>
+    let menuToggle, menuClose, sideMenu, menuOverlay; // Глобальные для меню
+    let postDetailContainer;
+    // ЗАМЕНИ НА СВОЙ РЕАЛЬНЫЙ URL
+    const backendApiBaseUrl = 'http://localhost:8080/api/post/';
+
+    function toggleMenu(open) {
+        if (!sideMenu || !menuOverlay || !document.body) return;
+        sideMenu.classList.toggle('open', open);
+        menuOverlay.classList.toggle('visible', open);
+        document.body.classList.toggle('menu-open', open);
+    }
+
+    async function fetchPostDetail() {
+        if (!postDetailContainer) {
+             console.error("Контейнер postDetailContainer не найден!"); return;
+        }
+        const urlParams = new URLSearchParams(window.location.search);
+        const postId = urlParams.get('id');
+
+        if (!postId) {
+            postDetailContainer.innerHTML = '<p class="error-message-post-detail">ID поста не указан.</p>'; return;
+        }
+        const currentPostDetailUrl = `${backendApiBaseUrl}${postId}`;
+        console.log("fetchPostDetail: Запрос на URL:", currentPostDetailUrl);
+
+        postDetailContainer.innerHTML = '<p class="loading-post-detail">Загрузка...</p>';
+        try {
+            const response = await fetch(currentPostDetailUrl);
+            console.log("fetchPostDetail: Ответ получен, статус:", response.status, response.statusText);
+            if (!response.ok) {
+                const errorText = await response.text();
+                if (response.status === 404) throw new Error('Пост не найден.');
+                throw new Error(`Ошибка HTTP: ${response.status}. ${errorText}`);
+            }
+            const post = await response.json();
+            console.log("fetchPostDetail: Данные JSON:", post);
+
+            document.title = `${post.title || 'Пост'} | Сердце Кавказа`;
+            let displayDate = 'дата не указана';
+            if (post.date) { // Поле 'date' из PostEntity
+                try {
+                    displayDate = new Date(post.date).toLocaleDateString('ru-RU', {
+                        year: 'numeric', month: 'long', day: 'numeric',
+                        hour:'2-digit', minute:'2-digit'
+                    });
+                } catch (e) { console.warn("Ошибка форматирования даты:", post.date, e); }
+            }
+
+            const postImageHtml = post.imageUrl ?
+                `<div class="post-main-image-container"><img src="${post.imageUrl}" alt="${post.title || 'Изображение поста'}"></div>` : '';
+
+            postDetailContainer.innerHTML = `
+                ${postImageHtml}
+                <h1 class="post-title-detail">${post.title || 'Без названия'}</h1>
+                <div class="post-meta-info-detail">
+                    ${post.author ? `<span><i class="fas fa-user"></i> ${post.author.name || 'Неизвестен'}</span>` : ''}
+                    <span><i class="fas fa-calendar-alt"></i> ${displayDate}</span>
+                </div>
+                <div class="post-description-section">
+                    ${post.shortDescription ? `<h3>Краткое описание</h3><p>${post.shortDescription}</p>` : ''}
+                    <h3>Полное описание</h3>
+                    <div>${post.fullDescription || '<p>Содержание поста отсутствует.</p>'}</div>
+                </div>
+                <a href="tours.html" class="back-to-list-link"><i class="fas fa-arrow-left"></i> Назад к списку</a>
+            `;
+        } catch (error) {
+            console.error('Ошибка загрузки поста:', error);
+            postDetailContainer.innerHTML = `<p class="error-message-post-detail">Не удалось загрузить пост. ${error.message}</p>`;
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        menuToggle = document.getElementById('menuToggle');
+        menuClose = document.getElementById('menuClose');
+        sideMenu = document.getElementById('sideMenu');
+        menuOverlay = document.getElementById('menuOverlay');
+        postDetailContainer = document.getElementById('postDetailContentWrapper');
+
+        const isLoggedIn = localStorage.getItem('isLoggedIn');
+        const userEmail = localStorage.getItem('userEmail');
+        const menuNav = document.querySelector('.side-menu .menu-nav');
+
+        if (menuNav) {
+            menuNav.innerHTML = '';
+            const staticLinksData = [
+                { href: "index.html", text: "Главная", icon: "fa-home" }, { href: "attractions.html", text: "Достопримечательности", icon: "fa-landmark" },
+                { href: "tours.html", text: "Туры", icon: "fa-map-signs" }, { href: "activerecreation.html", text: "Активный отдых", icon: "fa-hiking" },
+                { href: "botany.html", text: "Ботаника", icon: "fa-leaf" }, { href: "#", text: "Охота", icon: "fa-crosshairs" }, { href: "#", text: "Форум", icon: "fa-comments" }
+            ];
+            staticLinksData.forEach(linkData => {
+                const item = document.createElement('div'); item.classList.add('menu-item');
+                item.innerHTML = `<a href="${linkData.href}" class="menu-link"><i class="fas ${linkData.icon}"></i> ${linkData.text}</a>`;
+                menuNav.appendChild(item);
+            });
+
+            if (isLoggedIn === 'true') {
+                const profile = document.createElement('div'); profile.classList.add('menu-item', 'dynamic-auth-item');
+                profile.innerHTML = `<a href="#" id="profileMenuLink" class="menu-link"><i class="fas fa-user-circle"></i> Профиль ${userEmail ? `(${userEmail})` : ''}</a>`;
+                menuNav.appendChild(profile);
+                const logout = document.createElement('div'); logout.classList.add('menu-item', 'dynamic-auth-item');
+                logout.innerHTML = '<a href="#" id="logoutMenuLink" class="menu-link"><i class="fas fa-sign-out-alt"></i> Выход</a>';
+                menuNav.appendChild(logout);
+                logout.querySelector('#logoutMenuLink').addEventListener('click', e => {
+                    e.preventDefault(); localStorage.removeItem('isLoggedIn'); localStorage.removeItem('userEmail');
+                    alert('Вы вышли из системы.'); window.location.href = 'index.html';
+                });
+            } else {
+                const login = document.createElement('div'); login.classList.add('menu-item', 'dynamic-auth-item');
+                login.innerHTML = '<a href="login.html" class="menu-link"><i class="fas fa-sign-in-alt"></i> Вход</a>'; menuNav.appendChild(login);
+                const register = document.createElement('div'); register.classList.add('menu-item', 'dynamic-auth-item');
+                register.innerHTML = '<a href="register.html" class="menu-link"><i class="fas fa-user-plus"></i> Регистрация</a>'; menuNav.appendChild(register);
+            }
+        }
+
+        const allMenuLinks = document.querySelectorAll('.side-menu .menu-link');
+        allMenuLinks.forEach(link => {
+            if (link.dataset.hasClickListener === 'true') return;
+            link.dataset.hasClickListener = 'true';
+            const linkId = link.getAttribute('id');
+            const linkHref = link.getAttribute('href');
+            if (linkId === 'logoutMenuLink' || (linkId === 'profileMenuLink' && linkHref === '#')) {
+                if (linkId === 'profileMenuLink') link.addEventListener('click', e => { e.preventDefault(); alert('Страница профиля в разработке.'); toggleMenu(false); });
+                return;
+            }
+            link.addEventListener('click', e => {
+                if (linkHref && !linkHref.startsWith('#') && linkHref !== '#') { toggleMenu(false); return; }
+                e.preventDefault(); toggleMenu(false);
+                if (linkHref && linkHref.startsWith('#') && linkHref.length > 1) {
+                    const targetElement = document.querySelector(linkHref);
+                    if (targetElement) window.scrollTo({top: targetElement.offsetTop - 80, behavior: 'smooth'});
+                }
+            });
+        });
+
+        if (menuToggle) menuToggle.addEventListener('click', () => toggleMenu(true));
+        if (menuClose) menuClose.addEventListener('click', () => toggleMenu(false));
+        if (menuOverlay) menuOverlay.addEventListener('click', () => toggleMenu(false));
+        document.addEventListener('keydown', e => { if (sideMenu && sideMenu.classList.contains('open') && e.key === 'Escape') toggleMenu(false); });
+
+        fetchPostDetail();
+    });
+</script>
+</body>
+</html>

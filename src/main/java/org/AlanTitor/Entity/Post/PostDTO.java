@@ -6,15 +6,14 @@ public class PostDTO {
     long id;
     UserEntity author;
     String title;
-    int date;
-    String body;
+    String fullDescription;
+    String shortDescription;
 
-
-    public PostDTO(UserEntity author, String title, int date, String body) {
+    public PostDTO(UserEntity author, String title, String shortDescription, String fullDescription) {
         this.author = author;
         this.title = title;
-        this.date = date;
-        this.body = body;
+        this.shortDescription = shortDescription;
+        this.fullDescription = fullDescription;
     }
 
     public PostDTO() {
@@ -23,29 +22,30 @@ public class PostDTO {
     public long getId() {
         return id;
     }
-    public int getDate() {
-        return date;
-    }
     public UserEntity getAuthor() {
         return author;
     }
-    public String getBody() {
-        return body;
+    public String getFullDescription() {
+        return fullDescription;
     }
     public String getTitle() {
         return title;
     }
-
-    public void setDate(int date) {
-        this.date = date;
+    public String getShortDescription() {
+        return shortDescription;
     }
+
+
     public void setAuthor(UserEntity author) {
         this.author = author;
     }
-    public void setBody(String body) {
-        this.body = body;
+    public void setFullDescription(String fullDescription) {
+        this.fullDescription = fullDescription;
     }
     public void setTitle(String title) {
         this.title = title;
+    }
+    public void setShortDescription(String shortDescription) {
+        this.shortDescription = shortDescription;
     }
 }

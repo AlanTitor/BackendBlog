@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import org.AlanTitor.Entity.User.UserEntity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
+import java.util.Date;
+
 
 @Entity
 @Table(name = "Posts")
@@ -20,18 +22,24 @@ public class PostEntity {
     @Column(name = "Title", nullable = false)
     String title;
 
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "Date", nullable = false)
-    int date;
+    Date date;
 
-    @Column(name = "Body", nullable = true)
-    String body;
+    @Column(name = "shortDescription", nullable = true, length = 150)
+    String shortDescription;
+
+    @Column(name = "fullDescription", nullable = true)
+    String fullDescription;
 
 
-    public PostEntity(UserEntity author, String title, int date, String body){
+
+    public PostEntity(UserEntity author, String title, Date date, String shortDescription, String fullDescription){
         this.author = author;
         this.title = title;
         this.date = date;
-        this.body = body;
+        this.shortDescription = shortDescription;
+        this.fullDescription = fullDescription;
     }
 
     public PostEntity(){}
@@ -39,28 +47,35 @@ public class PostEntity {
     public long getId() {
         return id;
     }
-    public int getDate() {
+    public Date getDate() {
         return date;
     }
     public UserEntity getAuthor() {
         return author;
     }
-    public String getBody() {
-        return body;
+    public String getFullDescription() {
+        return fullDescription;
     }
     public String getTitle() {
         return title;
     }
+    public String getShortDescription() {
+        return shortDescription;
+    }
 
-    public void setDate(int date) {
+    public void setDate(Date date) {
         this.date = date;
     }
     public void setAuthor(UserEntity author) {
         this.author = author;
     }
-    public void setBody(String body) {
-        this.body = body;
+    public void setFullDescription(String FullDescription) {
+        this.fullDescription = FullDescription;
     }
+    public void setShortDescription(String shortDescription) {
+        this.shortDescription = shortDescription;
+    }
+
     public void setTitle(String title) {
         this.title = title;
     }

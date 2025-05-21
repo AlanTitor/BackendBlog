@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Наши Статьи и Туры | Сердце Кавказа</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2ecc71;
+            --dark-color: #2c3e50;
+            --light-gray-bg: #f8f9fa; /* Используем для фона страницы */
+            --text-color-dark: #34495e; /* Основной цвет текста */
+            --text-color-light: #7f8c8d;
+            --white-color: #ffffff;
+            --accent-color: #e74c3c;
+            --menu-width: 280px; /* Уменьшил для соответствия с другими страницами */
+            --menu-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            --menu-transition: transform 0.3s ease-in-out;
+            --border-light: #e9ecef;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            color: var(--text-color-dark); /* Изменил на более темный для основного текста */
+            line-height: 1.6;
+            overflow-x: hidden;
+            background-color: var(--light-gray-bg); /* Светлый фон для всей страницы */
+            transition: all 0.3s ease; /* Убрал, если не нужно для body */
+        }
+
+        body.menu-open {
+            overflow: hidden;
+        }
+
+        /* Шапка */
+        header {
+            background-color: rgba(255, 255, 255, 0.95); /* Чуть менее прозрачный */
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            padding: 15px 0;
+        }
+        .header-container { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        .logo { font-size: 24px; font-weight: 700; color: var(--primary-color); text-decoration: none; }
+        .menu-toggle { background: none; border: none; font-size: 24px; color: var(--primary-color); cursor: pointer; padding: 5px 10px; border-radius: 4px; }
+        .menu-toggle:hover { background-color: rgba(52, 152, 219, 0.1); }
+
+        /* Улучшенные стили для Бокового Меню (как в tour-form.html) */
+        .side-menu { position: fixed; top: 0; left: 0; transform: translateX(-100%); width: var(--menu-width); height: 100vh; background-color: var(--white-color); box-shadow: var(--menu-shadow); z-index: 1100; transition: var(--menu-transition); overflow-y: auto; display: flex; flex-direction: column; }
+        .side-menu.open { transform: translateX(0%); }
+        .menu-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1050; opacity: 0; visibility: hidden; transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out; }
+        .menu-overlay.visible { opacity: 1; visibility: visible; }
+        .menu-header { padding: 20px 25px; background: var(--primary-color); color: var(--white-color); display: flex; justify-content: space-between; align-items: center; }
+        .menu-header h3 { margin: 0; font-size: 1.4em; font-weight: 600; }
+        .menu-close { background: none; border: none; color: var(--white-color); font-size: 28px; cursor: pointer; padding: 5px; line-height: 1; transition: color 0.2s ease; }
+        .menu-close:hover { color: rgba(255,255,255,0.8); }
+        .menu-nav { padding: 15px 0; flex-grow: 1; }
+        .menu-item { border-bottom: 1px solid #f0f0f0; }
+        .menu-item:last-child { border-bottom: none; }
+        .menu-link { display: block; padding: 15px 25px; color: var(--text-color-dark); text-decoration: none; transition: background-color 0.2s ease, color 0.2s ease, padding-left 0.2s ease; font-weight: 500; font-size: 1.05em; }
+        .menu-link:hover { background-color: var(--light-gray-bg); color: var(--primary-color); padding-left: 30px; }
+        .menu-link .fas { margin-right: 12px; width: 20px; text-align: center; color: var(--primary-color); }
+        #logoutMenuLink .fas { color: var(--accent-color); }
+        #logoutMenuLink:hover { background-color: #ffebee; color: var(--accent-color); }
+        #logoutMenuLink:hover .fas { color: var(--accent-color); }
+
+
+        /* Хлебные крошки */
+        .breadcrumbs { max-width: 1200px; margin: 100px auto 20px; padding: 0 20px; font-size: 0.9em; color: var(--text-color-light); }
+        .breadcrumbs a { color: var(--primary-color); text-decoration: none; }
+        .breadcrumbs a:hover { text-decoration: underline; }
+        .breadcrumbs span { margin: 0 5px; }
+
+        /* Герой-блок */
+        .tours-hero { height: 45vh; /* Немного уменьшил */ background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1605540436563-5bca919ae766?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover; display: flex; align-items: center; justify-content: center; text-align: center; color: white; margin-bottom: 40px; }
+        .tours-hero-content { max-width: 700px; padding: 0 20px; }
+        .tours-hero h1 { font-size: 2.8rem; margin-bottom: 15px; text-shadow: 1px 1px 3px rgba(0,0,0,0.6); }
+        .tours-hero p { font-size: 1.1rem; text-shadow: 1px 1px 2px rgba(0,0,0,0.5); opacity: 0.9; }
+
+        /* Основной контент страницы туров */
+        .tours-page { max-width: 1200px; margin: 0 auto 50px; padding: 0 20px; }
+        .section-title { text-align: center; margin-bottom: 30px; font-size: 2rem; color: var(--dark-color); position: relative; font-weight: 600; }
+        .section-title::after { content: ''; display: block; width: 70px; height: 3px; background: var(--secondary-color); margin: 10px auto 0; border-radius: 2px; }
+
+        /* Фильтры (оставим пока без изменений, но можно стилизовать позже) */
+        .tour-filters { background: var(--white-color); padding: 20px 25px; border-radius: 8px; box-shadow: 0 3px 10px rgba(0,0,0,0.05); margin-bottom: 30px; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
+        .filter-group label { font-weight: 500; font-size: 0.9em; margin-bottom: 6px; }
+        .filter-select { width: 100%; padding: 10px; border: 1px solid var(--border-light); border-radius: 5px; background: var(--white-color); font-size: 0.95em; }
+
+        /* Кнопка создания */
+        .create-post-button-container { text-align: right; margin-bottom: 25px; }
+        .create-post-btn { background-color: var(--secondary-color); color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: 500; display: none; /* Скрыта JS */ transition: background-color 0.2s ease; }
+        .create-post-btn:hover { background-color: #27ae60; }
+        .create-post-btn .fas { margin-right: 8px; }
+
+        /* Сетка и карточки туров */
+        .tours-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); /* Чуть шире карточки */ gap: 25px; }
+
+        .tour-card {
+            background: var(--white-color);
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.07);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex; /* Для лучшего управления контентом внутри */
+            flex-direction: column;
+            /* Убираем opacity: 0 и transform отсюда, чтобы были видны по умолчанию */
+        }
+        .tour-card.visible { /* Этот класс будет добавляться для анимации, если она нужна */
+            opacity: 1;
+            transform: translateY(0);
+            /* Добавь transition для opacity и transform, если используешь эту анимацию */
+            /* transition: opacity 0.5s ease, transform 0.5s ease; */
+        }
+        .tour-card:hover { transform: translateY(-7px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+
+        /* Убираем .tour-image, т.к. картинок в списке нет */
+
+        .tour-content { padding: 20px 25px; flex-grow: 1; display: flex; flex-direction: column; }
+        .tour-title { font-size: 1.35rem; margin-bottom: 10px; color: var(--dark-color); font-weight: 600; }
+        .tour-description { color: var(--text-color-light); margin-bottom: 15px; font-size: 0.95em; flex-grow: 1; /* Чтобы описание занимало место и кнопка была внизу */ min-height: 50px; /* Чтобы карточки были примерно одной высоты */ }
+        .tour-meta { display: flex; flex-wrap: wrap; gap: 8px 15px; margin-bottom: 15px; color: var(--text-color-light); font-size: 0.85em; }
+        .tour-meta span { display: flex; align-items: center; }
+        .tour-icon { margin-right: 6px; color: var(--primary-color); }
+        .tour-price { font-weight: bold; color: var(--accent-color); font-size: 1.25rem; text-align: right; margin-bottom: 15px; }
+        .tour-button { display: inline-block; background: var(--primary-color); color: white; padding: 10px 20px; border-radius: 5px; text-decoration: none; transition: background-color 0.2s ease; width: 100%; text-align: center; margin-top: auto; /* Прижимает кнопку к низу карточки */ font-weight: 500; }
+        .tour-button:hover { background: #2980b9; }
+
+        .loading-posts, .no-posts-message { text-align: center; font-size: 1.2em; padding: 30px 20px; color: var(--text-color-light); }
+
+        /* Подвал */
+        footer { /* Твои стили */ }
+    </style>
+</head>
+<body>
+<header>
+    <div class="header-container">
+        <a href="index.html" class="logo">Сердце Кавказа</a>
+        <button class="menu-toggle" id="menuToggle"><i class="fas fa-bars"></i></button>
+    </div>
+</header>
+
+<div class="side-menu" id="sideMenu">
+    <div class="menu-header">
+        <h3>Меню</h3>
+        <button class="menu-close" id="menuClose"><i class="fas fa-times"></i></button>
+    </div>
+    <nav class="menu-nav">
+        <!-- Меню будет заполнено JS -->
+    </nav>
+</div>
+<div class="menu-overlay" id="menuOverlay"></div>
+
+<div class="breadcrumbs">
+    <a href="index.html">Главная</a> <span>»</span> <span>Статьи и Туры</span>
+</div>
+
+<section class="tours-hero">
+    <div class="tours-hero-content">
+        <h1>Наши Статьи и Туры</h1>
+        <p>Исследуйте Кавказ вместе с нами</p>
+    </div>
+</section>
+
+<main class="tours-page">
+    <h2 class="section-title">Все Статьи и Туры</h2>
+
+    <div class="tour-filters">
+        <!-- Твои фильтры (если есть) -->
+    </div>
+
+    <div class="create-post-button-container">
+        <a href="tour-form.html" class="create-post-btn" id="createPostBtnGlobal"><i class="fas fa-plus-circle"></i> Создать новый тур</a>
+    </div>
+
+    <div class="tours-grid" id="postsGridContainer">
+        <p class="loading-posts">Загрузка...</p>
+        <!-- Карточки будут добавлены сюда JS -->
+    </div>
+</main>
+
+<footer>
+    <div class="copyright" style="background-color: var(--dark-color); color: var(--white-color); padding: 20px; text-align: center;">
+        <p>© 2024 Сердце Кавказа. Все права защищены.</p>
+    </div>
+</footer>
+
+<script>
+    let menuToggle, menuClose, sideMenu, menuOverlay; // Глобальные для меню
+    let postsGridContainer;
+    const backendPostsListUrl = 'http://localhost:8080/api/post/list'; // ЗАМЕНИ НА СВОЙ РЕАЛЬНЫЙ URL
+
+    function toggleMenu(open) {
+        if (!sideMenu || !menuOverlay || !document.body) return;
+        sideMenu.classList.toggle('open', open);
+        menuOverlay.classList.toggle('visible', open);
+        document.body.classList.toggle('menu-open', open);
+    }
+
+    async function fetchPosts() {
+        if (!postsGridContainer) {
+            console.error("Контейнер postsGridContainer не найден!");
+            return;
+        }
+        postsGridContainer.innerHTML = '<p class="loading-posts">Загрузка...</p>';
+        console.log("fetchPosts: Запрос на URL:", backendPostsListUrl);
+
+        try {
+            const response = await fetch(backendPostsListUrl);
+            console.log("fetchPosts: Ответ получен, статус:", response.status, response.statusText);
+
+            if (!response.ok) {
+                const errorText = await response.text();
+                console.error("fetchPosts: Ошибка HTTP:", response.status, errorText);
+                throw new Error(`Ошибка HTTP: ${response.status}. ${errorText}`);
+            }
+
+            const result = await response.json();
+            console.log("fetchPosts: Данные JSON получены:", result);
+
+            const posts = result.Data; // Т.к. бэк возвращает { "Data": [...] }
+
+            if (posts && Array.isArray(posts) && posts.length > 0) {
+                postsGridContainer.innerHTML = '';
+                console.log(`fetchPosts: Найдено постов: ${posts.length}`);
+                posts.forEach(post => {
+                    const postCard = document.createElement('div');
+                    postCard.classList.add('tour-card'); // Используем этот класс для стилизации
+
+                    let displayDate = 'дата не указана';
+                    if (post.date) { // Поле 'date' из PostEntity (java.util.Date)
+                        try {
+                            displayDate = new Date(post.date).toLocaleDateString('ru-RU', {
+                                year: 'numeric', month: 'long', day: 'numeric'
+                            });
+                        } catch (e) { console.warn("Ошибка форматирования даты:", post.date, e); }
+                    }
+                    // Адаптируем под поля PostEntity и стили .tour-card
+                    // Убрал imageUrl и badgeText из генерации карточки здесь
+                    postCard.innerHTML = `
+                        <div class="tour-content">
+                            <h2 class="tour-title">${post.title || 'Без названия'}</h2>
+                            <p class="tour-description">${post.shortDescription || 'Краткое описание отсутствует.'}</p>
+                            <div class="tour-meta">
+                                ${post.author ? `<span><i class="fas fa-user tour-icon"></i> ${post.author.name || 'Автор'}</span>` : ''}
+                                <span><i class="fas fa-calendar-alt tour-icon"></i> ${displayDate}</span>
+                                ${post.price ? `<span class="tour-info"><i class="fas fa-ruble-sign tour-icon"></i> ${post.price}</span>` : ''}
+                                ${post.duration ? `<span class="tour-info"><i class="fas fa-clock tour-icon"></i> ${post.duration}</span>` : ''}
+                            </div>
+                            <a href="post-detail.html?id=${post.id}" class="tour-button">Подробнее</a>
+                        </div>
+                    `;
+                    console.log("Создана карточка для:", post.title, postCard.innerHTML);
+                    postsGridContainer.appendChild(postCard);
+
+                    // Для анимации появления (если стили .tour-card.visible настроены)
+                    // Задержка нужна, чтобы браузер успел вставить элемент в DOM перед добавлением класса
+                     setTimeout(() => {
+                        postCard.classList.add('visible');
+                     }, 10);
+                });
+            } else {
+                console.log("fetchPosts: Постов не найдено или массив пуст.");
+                postsGridContainer.innerHTML = '<p class="no-posts-message">Пока нет ни одного поста.</p>';
+            }
+        } catch (error) {
+            console.error('fetchPosts: Ошибка при загрузке постов:', error);
+            if (postsGridContainer) {
+                postsGridContainer.innerHTML = `<p class="no-posts-message">Не удалось загрузить данные. ${error.message}</p>`;
+            }
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        menuToggle = document.getElementById('menuToggle');
+        menuClose = document.getElementById('menuClose');
+        sideMenu = document.getElementById('sideMenu');
+        menuOverlay = document.getElementById('menuOverlay');
+        postsGridContainer = document.getElementById('postsGridContainer');
+
+        const isLoggedIn = localStorage.getItem('isLoggedIn');
+        const userEmail = localStorage.getItem('userEmail');
+        const menuNav = document.querySelector('.side-menu .menu-nav');
+        const createPostBtnGlobal = document.getElementById('createPostBtnGlobal');
+
+        if (menuNav) {
+            menuNav.innerHTML = ''; // Очищаем меню для полной перерисовки
+            const staticLinksData = [
+                { href: "index.html", text: "Главная", icon: "fa-home" },
+                { href: "attractions.html", text: "Достопримечательности", icon: "fa-landmark" },
+                { href: "tours.html", text: "Туры", icon: "fa-map-signs" },
+                { href: "activerecreation.html", text: "Активный отдых", icon: "fa-hiking" },
+                { href: "botany.html", text: "Ботаника", icon: "fa-leaf" },
+                { href: "#", text: "Охота", icon: "fa-crosshairs" },
+                { href: "#", text: "Форум", icon: "fa-comments" }
+            ];
+            staticLinksData.forEach(linkData => {
+                const item = document.createElement('div'); item.classList.add('menu-item');
+                item.innerHTML = `<a href="${linkData.href}" class="menu-link"><i class="fas ${linkData.icon}"></i> ${linkData.text}</a>`;
+                menuNav.appendChild(item);
+            });
+
+            if (isLoggedIn === 'true') {
+                if (createPostBtnGlobal) createPostBtnGlobal.style.display = 'inline-block';
+                const profile = document.createElement('div'); profile.classList.add('menu-item', 'dynamic-auth-item');
+                profile.innerHTML = `<a href="#" id="profileMenuLink" class="menu-link"><i class="fas fa-user-circle"></i> Профиль ${userEmail ? `(${userEmail})` : ''}</a>`;
+                menuNav.appendChild(profile);
+                const logout = document.createElement('div'); logout.classList.add('menu-item', 'dynamic-auth-item');
+                logout.innerHTML = '<a href="#" id="logoutMenuLink" class="menu-link"><i class="fas fa-sign-out-alt"></i> Выход</a>';
+                menuNav.appendChild(logout);
+                logout.querySelector('#logoutMenuLink').addEventListener('click', e => {
+                    e.preventDefault(); localStorage.removeItem('isLoggedIn'); localStorage.removeItem('userEmail');
+                    if (createPostBtnGlobal) createPostBtnGlobal.style.display = 'none';
+                    alert('Вы вышли из системы.'); window.location.reload();
+                });
+            } else {
+                if (createPostBtnGlobal) createPostBtnGlobal.style.display = 'none';
+                const login = document.createElement('div'); login.classList.add('menu-item', 'dynamic-auth-item');
+                login.innerHTML = '<a href="login.html" class="menu-link"><i class="fas fa-sign-in-alt"></i> Вход</a>'; menuNav.appendChild(login);
+                const register = document.createElement('div'); register.classList.add('menu-item', 'dynamic-auth-item');
+                register.innerHTML = '<a href="register.html" class="menu-link"><i class="fas fa-user-plus"></i> Регистрация</a>'; menuNav.appendChild(register);
+            }
+        }
+
+        const allMenuLinks = document.querySelectorAll('.side-menu .menu-link');
+        allMenuLinks.forEach(link => {
+            if (link.dataset.hasClickListener === 'true') return;
+            link.dataset.hasClickListener = 'true';
+            const linkId = link.getAttribute('id');
+            const linkHref = link.getAttribute('href');
+            if (linkId === 'logoutMenuLink') return;
+            if (linkId === 'profileMenuLink' && linkHref === '#') {
+                link.addEventListener('click', e => { e.preventDefault(); alert('Страница профиля в разработке.'); toggleMenu(false); }); return;
+            }
+            link.addEventListener('click', e => {
+                if (linkHref && !linkHref.startsWith('#') && linkHref !== '#') { toggleMenu(false); return; }
+                e.preventDefault(); toggleMenu(false);
+                if (linkHref && linkHref.startsWith('#') && linkHref.length > 1) {
+                    const targetElement = document.querySelector(linkHref);
+                    if (targetElement) window.scrollTo({top: targetElement.offsetTop - 80, behavior: 'smooth'});
+                }
+            });
+        });
+
+        if (menuToggle) menuToggle.addEventListener('click', () => toggleMenu(true));
+        if (menuClose) menuClose.addEventListener('click', () => toggleMenu(false));
+        if (menuOverlay) menuOverlay.addEventListener('click', () => toggleMenu(false));
+        document.addEventListener('keydown', e => { if (sideMenu && sideMenu.classList.contains('open') && e.key === 'Escape') toggleMenu(false); });
+
+        fetchPosts();
+
+        const filterSelects = document.querySelectorAll('.filter-select');
+        filterSelects.forEach(select => {
+            select.addEventListener('change', () => console.log('Фильтры (логика не подключена)'));
+        });
+    });
+</script>
+</body>
+</html>

@@ -2,12 +2,16 @@ package org.AlanTitor.Entity.User;
 
 public class UserDTO {
     private long id;
-    private String nickName;
+    private String name;
+    private String lastName;
+    private String email;
     private String password;
 
 
-    public UserDTO(String nickName, String password){
-        this.nickName = nickName;
+    public UserDTO(String name, String lastName, String email, String password){
+        this.name = name;
+        this.lastName = lastName;
+        this.email = email;
         this.password = password;
     }
     public UserDTO(){}
@@ -19,15 +23,26 @@ public class UserDTO {
     public String getPassword() {
         return password;
     }
-    public String getNickName() {
-        return nickName;
+    public String getName() {
+        return name;
     }
-
+    public String getLastName() {
+        return lastName;
+    }
+    public String getEmail() {
+        return email;
+    }
 
     public void setPassword(String password) {
         this.password = password;
     }
-    public void setNickName(String nickName) {
-        this.nickName = nickName;
+    public void setName(String name) {
+        this.name = name;
+    }
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

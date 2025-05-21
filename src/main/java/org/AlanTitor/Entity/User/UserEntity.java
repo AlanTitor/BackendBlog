@@ -14,8 +14,14 @@ public class UserEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "name", unique = true)
-    private String nickName;
+    @Column(name = "name", unique = false)
+    private String name;
+
+    @Column(name = "lastname", unique = false)
+    private String lastName;
+
+    @Column(name = "email", unique = true)
+    private String email;
 
     @Column(name = "password", unique = false)
     private String password;
@@ -24,8 +30,10 @@ public class UserEntity {
     @OneToMany(mappedBy = "author", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
     private List<PostEntity> posts;
 
-    public UserEntity(String nickName, String password){
-        this.nickName = nickName;
+    public UserEntity(String name, String lastName, String email, String password){
+        this.name = name;
+        this.lastName = lastName;
+        this.email = email;
         this.password = password;
     }
 
@@ -38,18 +46,32 @@ public class UserEntity {
     public String getPassword() {
         return password;
     }
-    public String getNickName() {
-        return nickName;
+    public String getName() {
+        return name;
     }
+    public String getLastName() {
+        return lastName;
+    }
+    public String getEmail() {
+        return email;
+    }
+
     public List<PostEntity> getPosts() {
         return posts;
     }
 
+
     public void setPassword(String password) {
         this.password = password;
     }
-    public void setNick_name(String nickName) {
-        this.nickName = nickName;
+    public void setName(String name) {
+        this.name = name;
+    }
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public void addPost(PostEntity post){
