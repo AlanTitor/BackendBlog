@@ -32,14 +32,41 @@ public class PostEntity {
     @Column(name = "fullDescription", nullable = true)
     String fullDescription;
 
+    @Column(name = "imageUrl", nullable = true)
+    String imageUrl;
 
+    @Column(name = "badgeText", nullable = true, length = 50)
+    String badgeText;
 
-    public PostEntity(UserEntity author, String title, Date date, String shortDescription, String fullDescription){
+    @Column(name = "difficulty", nullable = true, length = 50)
+    String difficulty;
+
+    @Column(name = "groupSize", nullable = true, length = 50)
+    int groupSize;
+
+    @Column(name = "price", nullable = true, length = 50)
+    double price;
+
+    @Column(name = "duration", nullable = true, length = 50)
+    int duration;
+
+    @Lob
+    @Column(name = "itineraryJson", nullable = true, columnDefinition = "TEXT")
+    String itineraryJson; // HTML-разметка для программы тура
+
+    public PostEntity(UserEntity author, String title, Date date, String shortDescription, String fullDescription, String imageUrl, String badgeText, String difficulty, int groupSize, double price, int duration, String itineraryJson){
         this.author = author;
         this.title = title;
         this.date = date;
         this.shortDescription = shortDescription;
         this.fullDescription = fullDescription;
+        this.imageUrl = imageUrl;
+        this.badgeText = badgeText;
+        this.difficulty = difficulty;
+        this.groupSize = groupSize;
+        this.price = price;
+        this.duration = duration;
+        this.itineraryJson = itineraryJson;
     }
 
     public PostEntity(){}
@@ -62,6 +89,27 @@ public class PostEntity {
     public String getShortDescription() {
         return shortDescription;
     }
+    public String getBadgeText() {
+        return badgeText;
+    }
+    public String getDifficulty() {
+        return difficulty;
+    }
+    public int getDuration() {
+        return duration;
+    }
+    public int getGroupSize() {
+        return groupSize;
+    }
+    public String getImageUrl() {
+        return imageUrl;
+    }
+    public double getPrice() {
+        return price;
+    }
+    public String getItineraryJson() {
+        return itineraryJson;
+    }
 
     public void setDate(Date date) {
         this.date = date;
@@ -78,5 +126,26 @@ public class PostEntity {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+    public void setBadgeText(String badgeText) {
+        this.badgeText = badgeText;
+    }
+    public void setDifficulty(String difficulty) {
+        this.difficulty = difficulty;
+    }
+    public void setDuration(int duration) {
+        this.duration = duration;
+    }
+    public void setGroupSize(int groupSize) {
+        this.groupSize = groupSize;
+    }
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+    public void setPrice(double price) {
+        this.price = price;
+    }
+    public void setItineraryJson(String itineraryJson) {
+        this.itineraryJson = itineraryJson;
     }
 }

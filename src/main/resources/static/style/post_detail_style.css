@@ -1,0 +1,266 @@
+:root {
+    --primary-color: #3498db;
+    --secondary-color: #2ecc71;
+    --dark-color: #2c3e50;    /* Основной темный цвет для текста и заголовков */
+    --light-gray-bg: #f4f7f6; /* Более мягкий светло-серый фон */
+    --text-color-main: #34495e; /* Основной цвет текста */
+    --text-color-muted: #6c757d; /* Приглушенный текст для мета-информации */
+    --white-color: #ffffff;
+    --accent-color: #e74c3c;
+    --menu-width: 280px;
+    --menu-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    --menu-transition: transform 0.3s ease-in-out;
+    --content-max-width: 800px; /* Максимальная ширина контента поста */
+    --border-light: #dee2e6;   /* Светлая граница, чуть темнее */
+    --border-radius-std: 8px;  /* Стандартный радиус скругления */
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+}
+
+body {
+    color: var(--text-color-main);
+    line-height: 1.75;
+    overflow-x: hidden;
+    background-color: var(--light-gray-bg);
+    font-size: 17px;
+}
+
+body.menu-open {
+    overflow: hidden;
+}
+
+/* === Шапка === */
+header {
+    background-color: var(--white-color);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    padding: 15px 0;
+}
+.header-container { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+.logo { font-size: 24px; font-weight: 700; color: var(--primary-color); text-decoration: none; }
+.menu-toggle { background: none; border: none; font-size: 24px; color: var(--primary-color); cursor: pointer; padding: 5px 10px; border-radius: 4px; }
+
+/* === Боковое Меню === */
+.side-menu { position: fixed; top: 0; left: 0; transform: translateX(-100%); width: var(--menu-width); height: 100vh; background-color: var(--white-color); box-shadow: var(--menu-shadow); z-index: 1100; transition: var(--menu-transition); overflow-y: auto; display: flex; flex-direction: column; }
+.side-menu.open { transform: translateX(0%); }
+.menu-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1050; opacity: 0; visibility: hidden; transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out; }
+.menu-overlay.visible { opacity: 1; visibility: visible; }
+.menu-header { padding: 20px 25px; background: var(--primary-color); color: var(--white-color); display: flex; justify-content: space-between; align-items: center; }
+.menu-header h3 { margin: 0; font-size: 1.4em; font-weight: 600; }
+.menu-close { background: none; border: none; color: var(--white-color); font-size: 28px; cursor: pointer; padding: 5px; line-height: 1; transition: color 0.2s ease; }
+.menu-nav { padding: 15px 0; flex-grow: 1; }
+.menu-item { border-bottom: 1px solid #f0f0f0; }
+.menu-item:last-child { border-bottom: none; }
+.menu-link { display: block; padding: 15px 25px; color: var(--text-color-dark); text-decoration: none; transition: background-color 0.2s ease, color 0.2s ease, padding-left 0.2s ease; font-weight: 500; font-size: 1.05em; }
+.menu-link .fas { margin-right: 12px; width: 20px; text-align: center; color: var(--primary-color); }
+
+
+/* === Стили для страницы детального просмотра поста === */
+.post-detail-page-container {
+    padding-top: 100px;
+    padding-bottom: 60px;
+}
+
+.post-content-wrapper {
+    max-width: var(--content-max-width);
+    margin: 0 auto;
+    padding: 40px 45px;
+    background: var(--white-color);
+    border-radius: var(--border-radius-std);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+}
+
+.post-main-image-container {
+    margin-bottom: 30px;
+    border-radius: var(--border-radius-std);
+    overflow: hidden;
+}
+.post-main-image-container img {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 450px;
+    object-fit: cover;
+}
+
+/* Стили для значка (badge) на детальной странице */
+.post-title-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+.post-title-detail {
+    font-size: 2.6em;
+    color: var(--dark-color);
+    line-height: 1.25;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    margin-bottom: 0; /* Убрали, т.к. отступ у .post-title-header */
+    flex-grow: 1;
+}
+.post-detail-badge {
+    background-color: var(--accent-color);
+    color: var(--white-color);
+    padding: 6px 12px;
+    border-radius: var(--border-radius-std);
+    font-size: 0.9em;
+    font-weight: 600;
+    white-space: nowrap;
+    margin-top: 8px;
+    align-self: flex-start;
+}
+
+
+.post-meta-info-detail {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 25px;
+    color: var(--text-color-muted);
+    font-size: 0.95em;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border-light);
+}
+.post-meta-info-detail span { display: flex; align-items: center; }
+.post-meta-info-detail .fas { margin-right: 8px; color: var(--primary-color); font-size: 1.15em; }
+
+.post-description-section {
+    margin-top: 25px;
+}
+.post-description-section h3 {
+    font-size: 1.6em;
+    color: var(--dark-color);
+    margin-top: 35px;
+    margin-bottom: 18px;
+    font-weight: 600;
+}
+.post-description-section h3:first-child { margin-top: 0; }
+
+.post-description-section p,
+.post-description-section div > p,
+.post-description-section li {
+    margin-bottom: 1.3em;
+    font-size: 1.08em;
+    color: var(--text-color-main);
+}
+.post-description-section strong { font-weight: 600; color: var(--dark-color); }
+.post-description-section em { font-style: italic; color: #555; }
+.post-description-section a { color: var(--primary-color); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; transition: color 0.2s ease; }
+.post-description-section a:hover { color: #237AB5; }
+.post-description-section ul, .post-description-section ol { margin-bottom: 1.3em; padding-left: 30px; }
+.post-description-section li { margin-bottom: 0.6em; }
+.post-description-section img { max-width: 100%; height: auto; border-radius: var(--border-radius-std); margin: 30px auto; display: block; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+.post-description-section blockquote { margin: 25px 0; padding: 20px 25px; background-color: #eef5f9; border-left: 5px solid var(--primary-color); font-style: italic; color: var(--text-color-main); font-size: 1.05em; }
+.post-description-section blockquote p { margin-bottom: 0; }
+.post-description-section pre { background-color: #282c34; color: #abb2bf; padding: 20px; border-radius: var(--border-radius-std); overflow-x: auto; font-family: 'Fira Code', 'Courier New', monospace; font-size: 0.95em; margin: 25px 0; line-height: 1.6; }
+.post-description-section code { background-color: #eef5f9; padding: 3px 6px; border-radius: 4px; font-family: 'Fira Code', 'Courier New', monospace; font-size: 0.9em; color: var(--primary-color); }
+
+/* Стили для программы тура (itinerary) */
+.tour-itinerary {
+    margin-top: 40px;
+    padding-top: 30px;
+    border-top: 1px solid var(--border-light);
+}
+
+.tour-itinerary h2 {
+    font-size: 1.8em;
+    color: var(--dark-color);
+    margin-bottom: 25px;
+    font-weight: 600;
+}
+
+.itinerary-day {
+    margin-bottom: 30px;
+    padding: 20px;
+    background-color: #fdfdfd;
+    border-left: 4px solid var(--primary-color);
+    border-radius: 0 var(--border-radius-std) var(--border-radius-std) 0;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+}
+.itinerary-day:last-child {
+    margin-bottom: 0;
+}
+
+.day-title {
+    display: flex;
+    align-items: center;
+    font-size: 1.3em;
+    font-weight: 600;
+    color: var(--dark-color);
+    margin-bottom: 15px;
+}
+
+.day-title .day-icon {
+    font-size: 1.1em;
+    color: var(--primary-color);
+    margin-right: 12px;
+    width: 20px;
+    text-align: center;
+}
+
+.day-content {
+    font-size: 1em;
+    color: var(--text-color-main);
+    line-height: 1.7;
+}
+
+/* Стили для HTML-контента внутри .day-content */
+.day-content p,
+.day-content ul,
+.day-content ol {
+    margin-bottom: 1em;
+}
+.day-content ul, .day-content ol {
+    padding-left: 25px;
+}
+.day-content li {
+    margin-bottom: 0.6em;
+}
+.day-content p:last-child,
+.day-content ul:last-child,
+.day-content ol:last-child {
+    margin-bottom: 0;
+}
+.day-content strong {
+    font-weight: 600;
+    color: var(--dark-color);
+}
+.day-content em {
+    font-style: italic;
+}
+.day-content a {
+    color: var(--primary-color);
+    text-decoration: underline;
+}
+.day-content a:hover {
+    text-decoration: none; /* или другой эффект */
+    color: #237AB5;
+}
+
+
+.loading-post-detail, .error-message-post-detail { text-align: center; font-size: 1.3em; padding: 60px 20px; color: var(--text-color-muted); }
+.error-message-post-detail { color: var(--accent-color); }
+
+.back-to-list-link { display: inline-block; margin-top: 40px; padding: 12px 22px; background-color: var(--primary-color); color: var(--white-color); text-decoration: none; border-radius: 6px; transition: background-color 0.2s ease; font-weight: 500; }
+.back-to-list-link .fas { margin-right: 8px; }
+.back-to-list-link:hover { background-color: #2980b9; }
+
+footer {
+    background-color: var(--dark-color);
+    color: var(--white-color);
+    padding: 20px;
+    text-align: center;
+}
+footer .copyright p {
+    margin: 0;
+    font-size: 0.9em;
+}

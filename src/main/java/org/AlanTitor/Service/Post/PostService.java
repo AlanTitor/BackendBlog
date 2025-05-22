@@ -32,7 +32,7 @@ public class PostService {
             throw new Exception("User isn't found");
         }
 
-        PostEntity post = new PostEntity(user, postDTO.getTitle(), new Date(), postDTO.getShortDescription(), postDTO.getFullDescription());
+        PostEntity post = new PostEntity(user, postDTO.getTitle(), new Date(), postDTO.getShortDescription(), postDTO.getFullDescription(), postDTO.getImageUrl(), postDTO.getBadgeText(), postDTO.getDifficulty(), postDTO.getGroupSize(), postDTO.getPrice(), postDTO.getDuration(), postDTO.getItineraryJson());
         user.addPost(post);
 
         return postRepo.save(post);
@@ -44,7 +44,7 @@ public class PostService {
     }
 
     public PostEntity getOnePostById(long id){
-        return postRepo.findById(id).get();
+        return postRepo.findById(id).orElseThrow();
     }
 
 }

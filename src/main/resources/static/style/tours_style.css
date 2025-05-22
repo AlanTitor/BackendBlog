@@ -1,0 +1,243 @@
+:root {
+    --primary-color: #3498db;
+    --secondary-color: #2ecc71;
+    --dark-color: #2c3e50;
+    --light-gray-bg: #f8f9fa;
+    --text-color-dark: #34495e;
+    --text-color-light: #7f8c8d; /* Используется для описания и мета-инфо */
+    --white-color: #ffffff;
+    --accent-color: #e74c3c; /* Используется для badge и цены */
+    --menu-width: 280px;
+    --menu-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    --menu-transition: transform 0.3s ease-in-out;
+    --border-light: #e9ecef;
+    --card-border-radius: 10px; /* Для единообразия карточек */
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    color: var(--text-color-dark);
+    line-height: 1.6;
+    overflow-x: hidden;
+    background-color: var(--light-gray-bg);
+}
+
+body.menu-open {
+    overflow: hidden;
+}
+
+/* --- Шапка и Меню (без изменений, оставлены для полноты) --- */
+header {
+    background-color: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    padding: 15px 0;
+}
+.header-container { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+.logo { font-size: 24px; font-weight: 700; color: var(--primary-color); text-decoration: none; }
+.menu-toggle { background: none; border: none; font-size: 24px; color: var(--primary-color); cursor: pointer; padding: 5px 10px; border-radius: 4px; }
+.menu-toggle:hover { background-color: rgba(52, 152, 219, 0.1); }
+
+.side-menu { position: fixed; top: 0; left: 0; transform: translateX(-100%); width: var(--menu-width); height: 100vh; background-color: var(--white-color); box-shadow: var(--menu-shadow); z-index: 1100; transition: var(--menu-transition); overflow-y: auto; display: flex; flex-direction: column; }
+.side-menu.open { transform: translateX(0%); }
+.menu-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1050; opacity: 0; visibility: hidden; transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out; }
+.menu-overlay.visible { opacity: 1; visibility: visible; }
+.menu-header { padding: 20px 25px; background: var(--primary-color); color: var(--white-color); display: flex; justify-content: space-between; align-items: center; }
+.menu-header h3 { margin: 0; font-size: 1.4em; font-weight: 600; }
+.menu-close { background: none; border: none; color: var(--white-color); font-size: 28px; cursor: pointer; padding: 5px; line-height: 1; transition: color 0.2s ease; }
+.menu-close:hover { color: rgba(255,255,255,0.8); }
+.menu-nav { padding: 15px 0; flex-grow: 1; }
+.menu-item { border-bottom: 1px solid #f0f0f0; }
+.menu-item:last-child { border-bottom: none; }
+.menu-link { display: block; padding: 15px 25px; color: var(--text-color-dark); text-decoration: none; transition: background-color 0.2s ease, color 0.2s ease, padding-left 0.2s ease; font-weight: 500; font-size: 1.05em; }
+.menu-link:hover { background-color: var(--light-gray-bg); color: var(--primary-color); padding-left: 30px; }
+.menu-link .fas { margin-right: 12px; width: 20px; text-align: center; color: var(--primary-color); }
+#logoutMenuLink .fas { color: var(--accent-color); }
+#logoutMenuLink:hover { background-color: #ffebee; color: var(--accent-color); }
+#logoutMenuLink:hover .fas { color: var(--accent-color); }
+
+/* --- Хлебные крошки, Герой-блок, Заголовки (без существенных изменений) --- */
+.breadcrumbs { max-width: 1200px; margin: 100px auto 20px; padding: 0 20px; font-size: 0.9em; color: var(--text-color-light); }
+.breadcrumbs a { color: var(--primary-color); text-decoration: none; }
+.breadcrumbs a:hover { text-decoration: underline; }
+.breadcrumbs span { margin: 0 5px; }
+
+.tours-hero { height: 45vh; background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1605540436563-5bca919ae766?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover; display: flex; align-items: center; justify-content: center; text-align: center; color: white; margin-bottom: 40px; }
+.tours-hero-content { max-width: 700px; padding: 0 20px; }
+.tours-hero h1 { font-size: 2.8rem; margin-bottom: 15px; text-shadow: 1px 1px 3px rgba(0,0,0,0.6); }
+.tours-hero p { font-size: 1.1rem; text-shadow: 1px 1px 2px rgba(0,0,0,0.5); opacity: 0.9; }
+
+.tours-page { max-width: 1200px; margin: 0 auto 50px; padding: 0 20px; }
+.section-title { text-align: center; margin-bottom: 30px; font-size: 2rem; color: var(--dark-color); position: relative; font-weight: 600; }
+.section-title::after { content: ''; display: block; width: 70px; height: 3px; background: var(--secondary-color); margin: 10px auto 0; border-radius: 2px; }
+
+.tour-filters { background: var(--white-color); padding: 20px 25px; border-radius: 8px; box-shadow: 0 3px 10px rgba(0,0,0,0.05); margin-bottom: 30px; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
+.filter-group label { font-weight: 500; font-size: 0.9em; margin-bottom: 6px; }
+.filter-select { width: 100%; padding: 10px; border: 1px solid var(--border-light); border-radius: 5px; background: var(--white-color); font-size: 0.95em; }
+
+.create-post-button-container { text-align: right; margin-bottom: 25px; }
+.create-post-btn { background-color: var(--secondary-color); color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: 500; display: none; transition: background-color 0.2s ease; }
+.create-post-btn:hover { background-color: #27ae60; }
+.create-post-btn .fas { margin-right: 8px; }
+
+/* --- ОБНОВЛЕННЫЕ СТИЛИ ДЛЯ СЕТКИ И КАРТОЧЕК ТУРОВ --- */
+.tours-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); /* Как в примере */
+    gap: 30px; /* Как в примере */
+}
+
+.tour-card {
+    background: var(--white-color);
+    border-radius: var(--card-border-radius);
+    overflow: hidden; /* Важно для обрезки изображения и позиционирования badge */
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1); /* Начальная тень */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    opacity: 0; /* Для анимации появления */
+    transform: translateY(20px); /* Для анимации появления */
+}
+
+.tour-card.visible { /* Класс для анимации появления */
+    opacity: 1;
+    transform: translateY(0);
+    /* transition для opacity и transform уже есть на .tour-card, но можно и сюда добавить для ясности, если нужна другая скорость анимации видимости */
+    /* transition: opacity 0.5s ease 0.1s, transform 0.5s ease 0.1s; */ /* Пример с задержкой */
+}
+
+.tour-card:hover {
+    transform: translateY(-10px); /* Эффект "подъема" при наведении */
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15); /* Более выраженная тень при наведении */
+}
+
+.tour-image {
+    height: 200px; /* Фиксированная высота для изображения */
+    overflow: hidden;
+    position: relative; /* Для позиционирования badge */
+    background-color: #eee; /* Плейсхолдер фон, если изображение не загрузится */
+}
+
+.tour-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Изображение будет покрывать контейнер, обрезаясь */
+    transition: transform 0.5s ease;
+}
+
+.tour-card:hover .tour-image img {
+    transform: scale(1.1); /* Эффект приближения изображения при наведении на карточку */
+}
+
+.tour-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: var(--accent-color);
+    color: var(--white-color);
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    z-index: 1; /* Чтобы был поверх изображения */
+}
+
+.tour-content {
+    padding: 20px 25px; /* Оставил ваши отступы */
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.tour-title {
+    font-size: 1.4rem; /* Как в примере */
+    margin-bottom: 10px;
+    color: var(--dark-color);
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+.tour-description {
+    color: var(--text-color-light);
+    margin-bottom: 15px;
+    font-size: 0.95em;
+    flex-grow: 1;
+    min-height: 60px; /* Как в примере, для выравнивания высоты карточек */
+    line-height: 1.5;
+}
+
+.tour-meta {
+    display: flex;
+    flex-wrap: wrap; /* Позволяет элементам переноситься на новую строку */
+    gap: 10px 15px; /* Отступы между элементами (вертикальный и горизонтальный) */
+    margin-bottom: 15px;
+    color: var(--text-color-light);
+    font-size: 0.9rem; /* Как в примере */
+}
+
+.tour-meta span, /* Общий стиль для всех элементов меты */
+.tour-info { /* tour-info из примера, можно использовать span */
+    display: flex;
+    align-items: center;
+}
+
+.tour-icon {
+    margin-right: 6px; /* Ваш отступ */
+    color: var(--primary-color);
+    font-size: 0.9em; /* Чуть меньше основного текста меты */
+}
+/* Специфичные иконки, если нужно выделить */
+.tour-meta .fa-calendar-alt { /* ... */ }
+.tour-meta .fa-signal { /* ... */ }
+.tour-meta .fa-users { /* ... */ }
+
+
+.tour-price {
+    font-weight: bold;
+    color: var(--accent-color);
+    font-size: 1.3rem; /* Как в примере */
+    text-align: right; /* Важно для позиционирования */
+    margin-bottom: 20px; /* Увеличил отступ перед кнопкой */
+    margin-top: auto; /* Если нужно прижать цену к кнопке, если описание короткое, но лучше через flex-grow у описания */
+}
+
+.tour-button {
+    display: inline-block;
+    background: var(--primary-color);
+    color: var(--white-color);
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+    width: 100%;
+    text-align: center;
+    margin-top: auto; /* Прижимает кнопку к низу карточки, если tour-content это flex-column */
+    font-weight: 500;
+}
+
+.tour-button:hover {
+    background: #2980b9; /* Затемненный primary-color */
+}
+/* --- КОНЕЦ ОБНОВЛЕННЫХ СТИЛЕЙ ДЛЯ КАРТОЧЕК --- */
+
+
+.loading-posts, .no-posts-message {
+    text-align: center;
+    font-size: 1.2em;
+    padding: 40px 20px; /* Увеличил отступ */
+    color: var(--text-color-light);
+    grid-column: 1 / -1; /* Чтобы сообщение занимало всю ширину грида */
+}
+
+footer {
+    /* Стили футера оставлены без изменений, используйте свои */
+}

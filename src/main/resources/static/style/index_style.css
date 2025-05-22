@@ -1,0 +1,150 @@
+/* === ТВОИ ИЗНАЧАЛЬНЫЕ СТИЛИ ИЗ INDEX.HTML === */
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2ecc71;
+            --dark-color: #2c3e50;
+            --light-color: #ecf0f1;
+            --text-color: #34495e;
+            --accent-color: #e74c3c;
+            --menu-width: 300px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+            transition: all 0.3s ease; /* Оставил, если это для body */
+        }
+
+        body.menu-open {
+            overflow: hidden;
+        }
+
+        /* Шапка */
+        header {
+            background-color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            padding: 15px 0;
+            transition: all 0.3s ease;
+        }
+        .header-container { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        .logo { font-size: 24px; font-weight: 700; color: var(--primary-color); text-decoration: none; }
+        .menu-toggle { background: none; border: none; font-size: 24px; color: var(--primary-color); cursor: pointer; padding: 5px 10px; border-radius: 4px; transition: all 0.3s ease; }
+        .menu-toggle:hover { background-color: rgba(52, 152, 219, 0.1); }
+
+        /* Главный блок с фоном */
+        .hero { height: 100vh; background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('images/Башкара.jpg') no-repeat center center/cover; display: flex; align-items: center; justify-content: center; text-align: center; color: white; padding-top: 80px; /* Убедись, что высота шапки учтена */ margin-bottom: 50px; }
+        .hero-content { max-width: 800px; padding: 0 20px; }
+        .hero h1 { font-size: 3rem; margin-bottom: 20px; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
+        .hero p { font-size: 1.2rem; margin-bottom: 30px; text-shadow: 1px 1px 2px rgba(0,0,0,0.5); }
+
+        /* Поиск */
+        .search-container { max-width: 600px; margin: 0 auto; }
+        .search-form { display: flex; background: white; border-radius: 50px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+        .search-input { flex: 1; padding: 15px 20px; border: none; outline: none; font-size: 16px; }
+        .search-button { background-color: var(--primary-color); color: white; border: none; padding: 0 25px; cursor: pointer; transition: all 0.3s ease; }
+        .search-button:hover { background-color: #2980b9; }
+
+        /* Блок достопримечательностей */
+        .attractions { max-width: 1200px; margin: 0 auto 50px; padding: 0 20px; }
+        .section-title { text-align: center; margin-bottom: 40px; font-size: 2.2rem; color: var(--dark-color); position: relative; }
+        .section-title::after { content: ''; display: block; width: 80px; height: 4px; background: var(--secondary-color); margin: 15px auto; border-radius: 2px; }
+        .attractions-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; }
+        .attraction-card { background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.1); transition: all 0.3s ease; opacity: 0; transform: translateY(20px); }
+        .attraction-card.visible { opacity: 1; transform: translateY(0); }
+        .attraction-card:hover { transform: translateY(-10px); box-shadow: 0 15px 30px rgba(0,0,0,0.2); }
+        .card-image { height: 200px; overflow: hidden; }
+        .card-image img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+        .attraction-card:hover .card-image img { transform: scale(1.1); }
+        .card-content { padding: 20px; }
+        .card-title { font-size: 1.4rem; margin-bottom: 10px; color: var(--dark-color); }
+        .card-description { color: #7f8c8d; margin-bottom: 15px; }
+        /* .card-price - этого класса нет в статике для туров, но он есть в общем CSS */
+
+        /* Блок туров (используется для "Популярные туры") */
+        .tours { max-width: 1200px; margin: 0 auto 50px; padding: 0 20px; }
+        .tours-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 30px; }
+        .tour-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden; /* Важно, если есть .card-image внутри */
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            opacity: 0; /* Для анимации появления */
+            transform: translateY(20px); /* Для анимации появления */
+            display: flex; /* Для выравнивания кнопки "Подробнее" внизу */
+            flex-direction: column;
+        }
+        .tour-card.visible { opacity: 1; transform: translateY(0); }
+        .tour-card:hover { transform: translateY(-10px); box-shadow: 0 15px 30px rgba(0,0,0,0.2); }
+        /* .card-image для .tour-card, если решишь вернуть картинки */
+        /* .tour-card .card-image { height: 200px; overflow: hidden; } */
+        /* .tour-card .card-image img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; } */
+        /* .tour-card:hover .card-image img { transform: scale(1.1); } */
+        .tour-content { padding: 20px; flex-grow: 1; display: flex; flex-direction: column; } /* flex-grow и display:flex для кнопки внизу */
+        .tour-title { font-size: 1.4rem; margin-bottom: 10px; color: var(--dark-color); }
+        .tour-info { display: flex; justify-content: space-between; margin-bottom: 15px; color: #7f8c8d; font-size: 0.9em; }
+        .tour-duration, .tour-difficulty { display: flex; align-items: center; }
+        .tour-difficulty { text-transform: capitalize; }
+        .tour-icon { margin-right: 5px; color: var(--primary-color); }
+        .tour-price { font-weight: bold; color: var(--accent-color); font-size: 1.2rem; text-align: right; margin-bottom: 10px; /* Уменьшил отступ, если нет описания */ }
+        .tour-button { display: inline-block; background: var(--primary-color); color: white; padding: 10px 20px; border-radius: 5px; text-decoration: none; margin-top: auto; /* Прижимает кнопку к низу */ transition: all 0.3s ease; text-align: center; width: 100%; }
+        .tour-button:hover { background: #2980b9; }
+
+        /* Подвал */
+        footer { background-color: var(--dark-color); color: white; padding: 50px 0 20px; }
+        .footer-container { max-width: 1200px; margin: 0 auto; padding: 0 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; }
+        .footer-column h3 { font-size: 1.3rem; margin-bottom: 20px; position: relative; padding-bottom: 10px; }
+        .footer-column h3::after { content: ''; position: absolute; left: 0; bottom: 0; width: 50px; height: 2px; background: var(--primary-color); }
+        .footer-column p, .footer-column a { color: #bdc3c7; margin-bottom: 10px; display: block; text-decoration: none; transition: all 0.3s ease; }
+        .footer-column a:hover { color: white; padding-left: 5px; }
+        /* ... (остальные стили подвала) ... */
+        .copyright { text-align: center; padding-top: 30px; margin-top: 30px; border-top: 1px solid rgba(255,255,255,0.1); color: #bdc3c7; font-size: 0.9rem; }
+
+        /* Боковое меню (твои исходные стили) */
+        .side-menu { position: fixed; top: 0; left: -100%; width: var(--menu-width); height: 100vh; background-color: white; box-shadow: 2px 0 10px rgba(0,0,0,0.1); z-index: 1100; transition: all 0.5s ease; overflow-y: auto; }
+        .side-menu.open { left: 0; }
+        .menu-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1050; opacity: 0; visibility: hidden; transition: all 0.3s ease; }
+        .menu-overlay.visible { opacity: 1; visibility: visible; }
+        .menu-header { padding: 20px; background: var(--primary-color); color: white; display: flex; justify-content: space-between; align-items: center; }
+        .menu-close { background: none; border: none; color: white; font-size: 24px; cursor: pointer; }
+        .menu-nav { padding: 20px 0; }
+        .menu-item { border-bottom: 1px solid #eee; }
+        .menu-link { display: block; padding: 15px 20px; color: var(--text-color); text-decoration: none; transition: all 0.3s ease; font-weight: 500; }
+        .menu-link:hover { background: #f5f5f5; color: var(--primary-color); padding-left: 25px; }
+        .menu-link .fas { margin-right: 10px; width: 18px; text-align: center; } /* Добавил для иконок в меню */
+
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.2rem; } .hero p { font-size: 1rem; }
+            .search-form { flex-direction: column; border-radius: 10px; }
+            .search-input { border-radius: 10px 10px 0 0; }
+            .search-button { padding: 15px; border-radius: 0 0 10px 10px; }
+            .section-title { font-size: 1.8rem; }
+            .attractions-grid, .tours-grid { grid-template-columns: 1fr; } /* Адаптивность для грида туров */
+            .side-menu { width: 280px; }
+        }
+
+        /* Анимации */
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .fade-in { animation: fadeIn 1s ease forwards; }
+
+        /* Сообщения о загрузке/отсутствии данных для популярных туров */
+        .loading-popular-tours, .no-popular-tours {
+            text-align: center;
+            padding: 20px;
+            color: var(--text-color); /* Используем основной цвет текста */
+            grid-column: 1 / -1; /* Чтобы сообщение занимало всю ширину грида, если он пуст */
+        }
