@@ -42,7 +42,7 @@ public class PostController {
         return new ResponseEntity<>("No Posts found.", HttpStatus.NOT_FOUND);
     }
 
-    // Эндпоинт получение списка постов
+    // Эндпоинт получение одного поста по id
     @GetMapping("/{id}")
     public ResponseEntity<?> getOnePost(@PathVariable("id") long id){
 
